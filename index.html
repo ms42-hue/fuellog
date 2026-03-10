@@ -458,7 +458,7 @@
                 </div>
               </div>
               <DayLogView entries={todayLog} onDelete={deleteEntry} readonly={false} />
-              <div style={{ height:90 }} />
+              <div style={{ height:"calc(90px + env(safe-area-inset-bottom))" }} />
             </div>
           )}
 
@@ -476,9 +476,9 @@
                   </div>
                 )}
                 <div ref={messagesEndRef} />
-                <div style={{ height:80 }} />
+                <div style={{ height:"calc(80px + env(safe-area-inset-bottom))" }} />
               </div>
-              <div style={{ padding:"10px 16px", borderTop:"1px solid #111120", background:"#08081299", backdropFilter:"blur(16px)", paddingBottom:`max(10px, env(safe-area-inset-bottom))` }}>
+              <div style={{ padding:"10px 16px", borderTop:"1px solid #111120", background:"#08081299", backdropFilter:"blur(16px)", paddingBottom:`max(10px, env(safe-area-inset-bottom))`, marginBottom:"calc(56px + env(safe-area-inset-bottom))" }}>
                 <div style={{ display:"flex", gap:8, alignItems:"flex-end", background:"#0f0f22", borderRadius:14, border:"1px solid #1a1a35", padding:"10px 12px" }}>
                   <textarea value={input} onChange={e=>setInput(e.target.value)}
                     onKeyDown={e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();sendMessage();}}}
@@ -545,7 +545,7 @@
                   </div>
                 );
               })()}
-              <div style={{ height:90 }} />
+              <div style={{ height:"calc(90px + env(safe-area-inset-bottom))" }} />
             </div>
           )}
 
