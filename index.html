@@ -242,7 +242,7 @@
 
         // API key
         const savedKey = localStorage.getItem("api-key");
-        if (savedKey) setApiKey(savedKey.trim());
+        if (savedKey) setApiKey(savedKey.replace(/[^\x20-\x7E]/g, "").trim());
 
         // Token
         let token = LS.get("api-token");
@@ -283,7 +283,7 @@
 
       async function sendMessage() {
         if (!input.trim() || loading) return;
-        const key = (apiKey || localStorage.getItem("api-key") || "").trim();
+        const key = (apiKey || localStorage.getItem("api-key") || "").replace(/[^\x20-\x7E]/g, "").trim();
         if (!key) { setShowApiKey(true); return; }
         const userMsg = input.trim();
         setInput("");
@@ -316,10 +316,10 @@
           }
           setMessages(prev => [...prev, { role:"assistant", content:clean }]);
         } catch(err) {
-          const key2 = (apiKey || localStorage.getItem("api-key") || "").trim();
+          const key2 = (apiKey || localStorage.getItem("api-key") || "").replace(/[^\x20-\x7E]/g, "").trim();
           const debugInfo = [
             `❌ Error: ${err.name}: ${err.message}`,
-            `Key loaded: ${key2 ? "YES (len=" + key2.length + ", starts=" + key2.slice(0,10) + "...)" : "NO KEY FOUND"}`,
+            `Key loaded: ${key2 ? "YES (len=" + key2.length + ", starts=" + key2.slice(0,10) + "...)" : "NO KEY FOUND - raw: " + JSON.stringify(localStorage.getItem("api-key")?.slice(0,20))}`,
             `Key valid format: ${key2.startsWith("sk-ant-") ? "YES" : "NO - doesnt start with sk-ant-"}`,
             `Worker URL: https://fuellog-proxy.matt-shep42.workers.dev/`,
           ].join("\n");
@@ -376,7 +376,7 @@
                 />
                 <div style={{ display:"flex", gap:8 }}>
                   <button onClick={() => setShowApiKey(false)} style={{ flex:1, padding:"8px", background:"none", border:"1px solid #2a2a45", borderRadius:7, color:"#666", fontSize:12, cursor:"pointer" }}>Cancel</button>
-                  <button onClick={() => { localStorage.setItem("api-key", apiKey.trim()); setApiKey(apiKey.trim()); setShowApiKey(false); sendMessage(); }} style={{ flex:2, padding:"8px", background:"linear-gradient(135deg,#7b5ea7,#4ecdc4)", border:"none", borderRadius:7, color:"white", fontSize:12, fontWeight:700, cursor:"pointer" }}>Save & Continue</button>
+                  <button onClick={() => { const clean = apiKey.replace(/[^ -~]/g, "").trim(); localStorage.setItem("api-key", clean); setApiKey(clean); setShowApiKey(false); sendMessage(); }} style={{ flex:2, padding:"8px", background:"linear-gradient(135deg,#7b5ea7,#4ecdc4)", border:"none", borderRadius:7, color:"white", fontSize:12, fontWeight:700, cursor:"pointer" }}>Save & Continue</button>
                 </div>
               </div>
             </div>
