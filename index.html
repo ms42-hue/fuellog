@@ -316,7 +316,14 @@
           }
           setMessages(prev => [...prev, { role:"assistant", content:clean }]);
         } catch(err) {
-          setMessages(prev => [...prev, { role:"assistant", content:`⚠️ Network error: ${err.message}. Check your connection and API key.` }]);
+          const key2 = (apiKey || localStorage.getItem("api-key") || "").trim();
+          const debugInfo = [
+            `❌ Error: ${err.name}: ${err.message}`,
+            `Key loaded: ${key2 ? "YES (len=" + key2.length + ", starts=" + key2.slice(0,10) + "...)" : "NO KEY FOUND"}`,
+            `Key valid format: ${key2.startsWith("sk-ant-") ? "YES" : "NO - doesnt start with sk-ant-"}`,
+            `Worker URL: https://fuellog-proxy.matt-shep42.workers.dev/`,
+          ].join("\n");
+          setMessages(prev => [...prev, { role:"assistant", content: debugInfo }]);
         }
         setLoading(false);
       }
