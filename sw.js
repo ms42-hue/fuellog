@@ -1,4 +1,4 @@
-const CACHE = "fuellog-v3";
+const CACHE = "fuellog-v4";
 const BASE = "/fuellog";
 
 const ASSETS = [
@@ -26,14 +26,14 @@ self.addEventListener("activate", e => {
 });
 
 self.addEventListener("fetch", e => {
-  if (e.request.url.includes("anthropic.com")) return;
-  if (e.request.url.includes("googleapis.com") || e.request.url.includes("cdnjs.cloudflare.com")) return;
+  // Let ALL external requests pass through untouched
+  if (!e.request.url.startsWith(self.location.origin)) return;
 
   e.respondWith(
     caches.match(e.request).then(cached => {
       if (cached) return cached;
       return fetch(e.request).then(res => {
-        if (res.ok && e.request.method === "GET" && e.request.url.startsWith(self.location.origin)) {
+        if (res.ok && e.request.method === "GET") {
           const clone = res.clone();
           caches.open(CACHE).then(c => c.put(e.request, clone));
         }
