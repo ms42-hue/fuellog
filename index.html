@@ -292,9 +292,11 @@
         try {
           const logSummary = todayLog.length > 0 ? `Today's log:\n${todayLog.map(e=>`- ${e.food}: ${e.calories} kcal`).join("\n")}\nTotal: ${totals.calories}/${DAILY_GOAL} kcal` : "Nothing logged yet today.";
           const systemPrompt = `You are a nutrition coach for a 27yo male, ${latestWeight} lbs, 5'10", goal ${GOAL_WEIGHT} lbs. Daily target: ${DAILY_GOAL} kcal, protein ${PROTEIN_GOAL}g, carbs ${CARB_GOAL}g, fat ${FAT_GOAL}g.\n\n${logSummary}\n\nWhen user logs food: 1) Estimate calories & macros. 2) Brief feedback (2-3 sentences). 3) End with: FOOD_DATA:{"food":"...","calories":N,"protein":N,"carbs":N,"fat":N}\n\nSkip FOOD_DATA for general questions. Be concise and supportive.`;
+          console.log("DEBUG key length:", key.length, "starts:", key.slice(0,15), "ends:", key.slice(-10));
+          console.log("DEBUG key charCodes start:", [...key.slice(0,5)].map(c=>c.charCodeAt(0)));
           const res = await fetch("https://fuellog-proxy.matt-shep42.workers.dev/", {
             method:"POST",
-            headers:{ "Content-Type":"application/json", "x-api-key": key, "anthropic-version":"2023-06-01", "anthropic-dangerous-client-side-allowed":"true" },
+            headers:{ "Content-Type":"application/json", "x-api-key": key, "anthropic-version":"2023-06-01" },
             body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, system:systemPrompt, messages:[{ role:"user", content:userMsg }] })
           });
           const data = await res.json();
