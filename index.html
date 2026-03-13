@@ -521,36 +521,7 @@ Be concise and realistic with estimates.`;
                 </div>
               </div>
 
-              {/* Sync to Apple Health button */}
-              {todayLog.length > 0 && (
-                <div
-                  onClick={() => {
-                    const url = `shortcuts://run-shortcut?name=FuelLog%20Nutrition%20Sync&input=text&text=${encodeURIComponent(JSON.stringify({
-                      calories: totals.calories,
-                      protein: totals.protein,
-                      carbs: totals.carbs,
-                      fat: totals.fat,
-                      date: TODAY
-                    }))}`;
-                    window.location.href = url;
-                  }}
-                  style={{ display:"flex", alignItems:"center", justifyContent:"space-between", padding:"11px 14px", background:"#0d1a14", border:"1px solid #1a3528", borderRadius:12, marginBottom:12, cursor:"pointer" }}
-                  onMouseOver={e=>e.currentTarget.style.borderColor="#4ecdc488"}
-                  onMouseOut={e=>e.currentTarget.style.borderColor="#1a3528"}
-                >
-                  <div style={{ display:"flex", alignItems:"center", gap:10 }}>
-                    <span style={{ fontSize:18 }}>🍎</span>
-                    <div>
-                      <div style={{ fontSize:12, fontWeight:600, color:"#4ecdc4" }}>Sync to Apple Health</div>
-                      <div style={{ fontSize:10, color:"#6868a0", fontFamily:MONO, marginTop:1 }}>
-                        {totals.calories} kcal · P:{totals.protein}g · C:{totals.carbs}g · F:{totals.fat}g
-                      </div>
-                    </div>
-                  </div>
-                  <span style={{ fontSize:16, color:"#4ecdc466" }}>→</span>
-                </div>
-              )}
-              <DayLogView entries={todayLog} onDelete={deleteEntry} readonly={false} />
+                            <DayLogView entries={todayLog} onDelete={deleteEntry} readonly={false} />
               <div style={{ height:"calc(90px + env(safe-area-inset-bottom))" }} />
             </div>
           )}
